@@ -1,0 +1,6 @@
+[build]
+  builder = "nixpacks"
+  buildCommand = "mvn clean package -DskipTests -B -T 1"
+
+[deploy]
+  startCommand = "java -Xmx256m -XX:+UseSerialGC -Djava.security.egd=file:/dev/./urandom -jar target/polybot-railway-*.jar --spring.profiles.active=railway"
