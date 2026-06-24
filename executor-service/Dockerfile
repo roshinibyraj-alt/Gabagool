@@ -1,10 +1,16 @@
 FROM maven:3.9-eclipse-temurin-21 AS builder
 WORKDIR /build
 
-# Cache Maven dependencies
 COPY pom.xml ./
 COPY polybot-core/pom.xml ./polybot-core/pom.xml
 COPY executor-service/pom.xml ./executor-service/pom.xml
+
+# Strip unused modules from pom.xml so Maven doesn't fail on missing modules
+RUN sed -i '/<module>analytics-service/,/<\/module>/d' pom.xml && \
+    sed -i '/<module>ingestor-service/,/<\/module>/d' pom.xml && \
+    sed -i '/<module>infrastructure-orchestrator-service/,/<\/module>/d' pom.xml
+
+# Cache Maven dependencies
 RUN mvn dependency:go-offline -pl executor-service -am -B -q 2>/dev/null || true
 
 # Build
