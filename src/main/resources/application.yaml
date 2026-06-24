@@ -1,0 +1,8 @@
+spring:
+  config:
+    import: classpath:polybot-common.yaml
+  application:
+    name: polybot-railway
+
+server:
+  port: 8080
